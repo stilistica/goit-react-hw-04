@@ -7,6 +7,7 @@ import LoadMoreBtn from "./components/loadMoreBtn/LoadMoreBtn.jsx";
 import Loader from "./components/loader/Loader.jsx";
 import ErrorMessage from "./components/errorMessage/ErrorMessage.jsx";
 import ImageModal from "./components/imageModal/ImageModal.jsx";
+import toast from "react-hot-toast";
 
 function App() {
   const [gallery, setGallery] = useState([]);
@@ -28,6 +29,9 @@ function App() {
         const data = await fetchGallery(query, page, abortController.signal);
         setGallery((prev) => [...prev, ...data.results]);
         setTotalPage(data.total_pages);
+        if (data.total === 0) {
+          return toast.error("Введіть інший текст для пошуку зображень");
+        }
       } catch (error) {
         console.log(error);
         setIsError(true);
